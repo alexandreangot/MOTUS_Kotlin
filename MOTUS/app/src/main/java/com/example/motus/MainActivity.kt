@@ -3,10 +3,7 @@ package com.example.motus
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
-import android.widget.Button
-import android.widget.TableLayout
-import android.widget.TableRow
-import android.widget.TextView
+import android.widget.*
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,21 +12,31 @@ class MainActivity : AppCompatActivity() {
 
         val keys = createKeyboard()
         val word = "MAISON"
-        createGrid(word)
-        /*
-        val try1 = findViewById<TextView>(R.id.try1)
+        val case = createGrid(word)
+        var step = 0
+        var column = 1
+        case[step][0].text = word[0].toString()
         for (key in keys){
             key.setOnClickListener {
-                try1.text = key.contentDescription.toString()
+                if (column<word.length){
+                    case[step][column].text = key.contentDescription
+                    column++
+                }
+                else {
+                    step++
+                    column=1
+                    case[step][0].text = word[0].toString()
+                }
             }
         }
-         */
 
     }
 
-    private fun createGrid(word : String){
+    private fun createGrid(word : String) : MutableList<MutableList<TextView>>{
+        val list = mutableListOf<MutableList<TextView>>()
         val tableLayoutTriedWord = findViewById<TableLayout>(R.id.tableLayoutTriedWord)
         for (i in 0 until 6) {
+            val row = mutableListOf<TextView>()
             val tableRow = TableRow(this)
             tableRow.layoutParams = TableLayout.LayoutParams(
                 TableLayout.LayoutParams.MATCH_PARENT,
@@ -48,10 +55,13 @@ class MainActivity : AppCompatActivity() {
                 textView.layoutParams.height = 100
                 textView.layoutParams.width = 50
                 textView.setBackgroundResource(R.drawable.textview_border)
+                row.add(textView)
                 tableRow.addView(textView)
             }
+            list.add(row)
             tableLayoutTriedWord.addView(tableRow)
         }
+        return list
     }
 
     private fun createKeyboard(): MutableList<Button> {
