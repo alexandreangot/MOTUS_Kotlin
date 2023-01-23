@@ -1,35 +1,55 @@
 package com.example.motus
 
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
-import android.widget.*
+import android.widget.Button
+import android.widget.TableLayout
+import android.widget.TableRow
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.word)
 
+        val motus = Motus()
         val keys = createKeyboard()
-        val word = "MAISON"
-        val case = createGrid(word)
-        var step = 0
-        var column = 1
-        case[step][0].text = word[0].toString()
+        val boxes = createGrid(motus.getWord())
+
+        boxes[motus.getStep()][0].text = motus.getFirstLetter()
+
         for (key in keys){
             key.setOnClickListener {
-                if (column<word.length){
-                    case[step][column].text = key.contentDescription
-                    column++
+                if (key.contentDescription == "❌"){
+                    motus.setBox(key.contentDescription as String)
                 }
-                else {
-                    step++
-                    column=1
-                    case[step][0].text = word[0].toString()
+
+            }
+        }
+    }
+
+    private fun displayResultRow(gridRow : MutableList<TextView>, motus: Motus){
+        for(i in 0 until valuesRow.size){
+            motus.getStateLetters()
+        }
+    }
+
+    private fun colorBoxes(word : String, row : MutableList<TextView>){
+        for (i in word.indices){
+            if(word[i].toString() == row[i].text){
+                row[i].setBackgroundColor(Color.RED)
+            }
+            else{
+                for (j in word.indices){
+                    if((word[j].toString() == row[i].text) && (word[i].toString() != word[j].toString())){
+                        row[i].setBackgroundColor(Color.GREEN)
+                    }
                 }
             }
         }
-
     }
 
     private fun createGrid(word : String) : MutableList<MutableList<TextView>>{
