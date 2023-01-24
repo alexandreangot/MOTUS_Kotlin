@@ -3,4 +3,5 @@
     <string name="start_button">Démarrer</string>
     <string name="motus">MOTUS</string>
     <string name="home">Home</string>
+    <string name="restart">Restart</string>
 </resources>

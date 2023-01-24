@@ -40,27 +40,11 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    /*
-    private fun colorBoxes(word : String, row : MutableList<TextView>){
-        for (i in word.indices){
-            if(word[i].toString() == row[i].text){
-                row[i].setBackgroundColor(Color.RED)
-            }
-            else{
-                for (j in word.indices){
-                    if((word[j].toString() == row[i].text) && (word[i].toString() != word[j].toString())){
-                        row[i].setBackgroundColor(Color.GREEN)
-                    }
-                }
-            }
-        }
-    }
-    */
     private fun createKeyboard(): MutableList<Button> {
         val buttonList = mutableListOf<Button>()
         val tableLayout = findViewById<TableLayout>(R.id.tableLayoutKeyboard)
 
-        val alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray()
+        val alphabet = "AZERTYUIOPQSDFGHJKLMWXCVBN".toCharArray()
         var index = 0
 
         for (i in 0 until 3) {

@@ -12,17 +12,27 @@ class Motus {
     }
     fun getGrid() : MutableList<MutableList<Pair<Char, Int>>> { return grid }
     fun getWord(): String { return word }
-    fun isEnd(): Boolean { return end }
+    private fun isEnd(): Boolean {
+        if (!end){
+            for (i in word.indices){
+                if(grid[step][i].first != word[i]){
+                    return false
+                }
+            }
+            end=true
+        }
+        return end
+    }
 
     fun addLetter(letter : Char){
-        if (column < word.length){
+        if (column < word.length && !isEnd()){
             grid[step][column] = Pair(letter, 1)
             column++
         }
     }
 
     fun removeLetter(){
-        if (column > 1){
+        if (column > 1 && !isEnd()){
             column--
             val letter = " ".toCharArray()[0]
             grid[step][column] = Pair(letter, 0)
@@ -33,9 +43,11 @@ class Motus {
         if (column == word.length){
             if (step<word.length-1){
                 checkRightLetter()
-                step++
-                column=1
-                grid[step][0] = Pair(word[0], 1)
+                if (!isEnd()){
+                    step++
+                    column=1
+                    grid[step][0] = Pair(word[0], 1)
+                }
             }
             else{
                 this.end = true
@@ -51,12 +63,12 @@ class Motus {
                 grid[step][i] = Pair(grid[step][i].first, 3)
                 occurrences[grid[step][i].first] = occurrences[grid[step][i].first]!! - 1
             }
-            else{ // letters in the word
-                if (occurrences.containsKey(grid[step][i].first)){
-                    if (occurrences[grid[step][i].first]!! > 0){
-                        grid[step][i] = Pair(grid[step][i].first, 2)
-                        occurrences[grid[step][i].first] = occurrences[grid[step][i].first]!! - 1
-                    }
+        }
+        for( i in word.indices){
+            if (occurrences.containsKey(grid[step][i].first)){
+                if (occurrences[grid[step][i].first]!! > 0){
+                    grid[step][i] = Pair(grid[step][i].first, 2)
+                    occurrences[grid[step][i].first] = occurrences[grid[step][i].first]!! - 1
                 }
             }
         }
