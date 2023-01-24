@@ -4,14 +4,15 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:background="@drawable/grid_item_border">
+    android:background="@drawable/grid_item_border"
+    android:padding="2dp">
 
     <TextView
         android:id="@+id/grid_item_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:gravity="center"
-        android:padding="10dp" />
+        android:paddingVertical="10dp"/>
 
 </LinearLayout>

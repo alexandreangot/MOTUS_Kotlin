@@ -1,12 +1,8 @@
 package com.example.motus
 
-import MyGridAdapter
 import android.os.Bundle
 import android.widget.*
-import android.widget.TextView.BufferType
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.get
-import androidx.databinding.BindingAdapter
 
 
 class MainActivity : AppCompatActivity() {
@@ -23,17 +19,24 @@ class MainActivity : AppCompatActivity() {
 
         val keys = createKeyboard()
 
-        for (key in keys){
-            key.setOnClickListener {
-                if (key.contentDescription == "❌"){
-                    motus.removeLetter()
+        for (key in keys) {
+                key.setOnClickListener {
+
+                    when (key.contentDescription) {
+                        "❌" -> {
+                            motus.removeLetter()
+                        }
+                        "✔" -> {
+                            motus.checkWord()
+                        }
+                        else -> {
+                            motus.addLetter(key.contentDescription[0])
+                        }
+                    }
+                    adapter.updateData(motus.getGrid())
                 }
-                else{
-                    motus.addLetter(key.contentDescription as String)
-                }
-                adapter.updateData(motus.getGrid())
             }
-        }
+
 
     }
 

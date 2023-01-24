@@ -1,15 +1,17 @@
+package com.example.motus
+
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import com.example.motus.R
 
-class MyGridAdapter(context: Context, private var data: MutableList<MutableList<String>>) : BaseAdapter() {
+class MyGridAdapter(context: Context, private var data: MutableList<MutableList<Pair<Char, Int>>>) : BaseAdapter() {
     private val mInflater: LayoutInflater = LayoutInflater.from(context)
 
-    fun updateData(newData: MutableList<MutableList<String>>) {
+    fun updateData(newData: MutableList<MutableList<Pair<Char, Int>>>) {
         this.data = newData
         notifyDataSetChanged()
     }
@@ -18,7 +20,7 @@ class MyGridAdapter(context: Context, private var data: MutableList<MutableList<
         return data.size * data[0].size
     }
 
-    override fun getItem(position: Int): Any {
+    override fun getItem(position: Int): Pair<Char, Int> {
         val row = position / data[0].size
         val col = position % data[0].size
         return data[row][col]
@@ -41,7 +43,22 @@ class MyGridAdapter(context: Context, private var data: MutableList<MutableList<
             vh = view.tag as ViewHolder
         }
 
-        vh.textView.text = getItem(position) as String
+        vh.textView.text = getItem(position).first.toString()
+
+        when(getItem(position).second){
+            0 -> {
+                vh.textView.setBackgroundColor(Color.TRANSPARENT)
+            }
+            1 -> {
+                vh.textView.setBackgroundColor(Color.CYAN)
+            }
+            2 -> {
+                vh.textView.setBackgroundColor(Color.YELLOW)
+            }
+            3 -> {
+                vh.textView.setBackgroundColor(Color.RED)
+            }
+        }
 
         return view
     }
