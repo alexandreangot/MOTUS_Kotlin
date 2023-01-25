@@ -1,10 +1,12 @@
 package com.example.motus
 
-class Motus {
+import android.util.Log
+
+class Motus(private val words : MutableList<String>) {
     private var end :Boolean = false
     private var step : Int = 0
     private var column : Int = 1
-    private var word : String = "ABRICOT"
+    private var word : String = words.random()
     private var grid : MutableList<MutableList<Pair<Char, Int>>> = MutableList(6) { MutableList(word.length) { " ".toCharArray()[0] to 0 } }
 
     init {
@@ -42,17 +44,32 @@ class Motus {
     fun checkWord() {
         if (column == word.length){
             if (step<word.length-1){
-                checkRightLetter()
-                if (!isEnd()){
-                    step++
-                    column=1
-                    grid[step][0] = Pair(word[0], 1)
+                if (words.contains(getCurrentWordInRow())){
+                    checkRightLetter()
+                    if (!isEnd()){
+                        step++
+                        column=1
+                        grid[step][0] = Pair(word[0], 1)
+                    }
+                }
+                else{
+                    removeWord()
+                    column = 1
                 }
             }
             else{
                 this.end = true
             }
         }
+    }
+
+    private fun getCurrentWordInRow(): String {
+        var currentWord = ""
+        for (i in 0 until column){
+            currentWord+=grid[step][i].first
+        }
+        Log.d("MainActivity", "ecrit : $currentWord")
+        return currentWord
     }
 
     private fun checkRightLetter() {
@@ -93,4 +110,5 @@ class Motus {
             grid[step][i] = Pair(" ".toCharArray()[0], 0)
         }
     }
+
 }

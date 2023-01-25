@@ -1,8 +1,15 @@
 package com.example.motus
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import java.io.BufferedReader
+import java.io.FileReader
+import java.io.InputStream
+import java.io.InputStreamReader
+import java.text.Normalizer
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -10,7 +17,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.word)
 
-        val motus = Motus()
+
+
+
+        val words = readDictionary((5..10).random())
+
+
+
+        val motus = Motus(words)
+
+        Log.d("MainActivity", "word: ${motus.getWord()}")
 
         val myGridView = findViewById<GridView>(R.id.gridView)
         myGridView.numColumns = motus.getWord().length
@@ -38,6 +54,29 @@ class MainActivity : AppCompatActivity() {
             }
 
 
+    }
+
+    private fun readDictionary(size : Int): MutableList<String> {
+        val words = mutableListOf<String>()
+
+        val csvFile = "dictionary.csv"
+        val inputStream: InputStream = assets.open(csvFile)
+        val reader = BufferedReader(InputStreamReader(inputStream))
+        var line: String?
+        while (reader.readLine().also { line = it } != null) {
+            var word = line?.split(",")?.toTypedArray()?.get(0)
+
+            word = Normalizer.normalize(word, Normalizer.Form.NFD)
+            word = word.replace("[^\\p{ASCII}]".toRegex(), "")
+            word  = word.uppercase()
+            if (word.length==size){
+                words.add(word)
+                Log.d("MainActivity", "word: $word")
+            }
+
+        }
+        reader.close()
+        return words
     }
 
     private fun createKeyboard(): MutableList<Button> {
