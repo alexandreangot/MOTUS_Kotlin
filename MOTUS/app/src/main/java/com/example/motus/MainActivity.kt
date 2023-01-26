@@ -5,11 +5,9 @@ import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import java.io.BufferedReader
-import java.io.FileReader
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.text.Normalizer
-import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -19,19 +17,32 @@ class MainActivity : AppCompatActivity() {
 
 
 
+        var motus = startGame()
 
-        val words = readDictionary((5..10).random())
-
-
-
-        val motus = Motus(words)
 
         Log.d("MainActivity", "word: ${motus.getWord()}")
 
+        val imageButtonHint = findViewById<ImageButton>(R.id.imageButtonHint)
+        imageButtonHint.setOnClickListener{
+            Toast.makeText(applicationContext, motus.getWord(), Toast.LENGTH_LONG).show()
+        }
+
+
+
         val myGridView = findViewById<GridView>(R.id.gridView)
         myGridView.numColumns = motus.getWord().length
-        val adapter = MyGridAdapter(this, motus.getGrid())
+        var adapter = MyGridAdapter(this, motus.getGrid())
         myGridView.adapter = adapter
+
+        val imageButtonRestart = findViewById<ImageButton>(R.id.imageButtonRestart)
+        imageButtonRestart.setOnClickListener{
+            motus = startGame()
+            myGridView.numColumns = motus.getWord().length
+            adapter = MyGridAdapter(this, motus.getGrid())
+            myGridView.adapter = adapter
+            adapter.updateData(motus.getGrid())
+        }
+
 
         val keys = createKeyboard()
 
@@ -56,7 +67,15 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun readDictionary(size : Int): MutableList<String> {
+    private fun startGame(): Motus {
+        val words = readDictionary()
+        return Motus(words)
+    }
+
+
+    private fun readDictionary(): MutableList<String> {
+        val size = (5..10).random()
+
         val words = mutableListOf<String>()
 
         val csvFile = "dictionary.csv"
@@ -65,11 +84,16 @@ class MainActivity : AppCompatActivity() {
         var line: String?
         while (reader.readLine().also { line = it } != null) {
             var word = line?.split(",")?.toTypedArray()?.get(0)
-
+            
+            // Enleve les accents du mot et le mets en majuscule
             word = Normalizer.normalize(word, Normalizer.Form.NFD)
             word = word.replace("[^\\p{ASCII}]".toRegex(), "")
             word  = word.uppercase()
-            if (word.length==size){
+            
+            // regex permettant de vérifier que le mot ne contient pas d'espace ou de tiret
+            val regex = Regex("\\b(?!-)\\w+\\b(?<!-)")
+
+            if (word.length==size && word.matches(regex)){
                 words.add(word)
                 Log.d("MainActivity", "word: $word")
             }

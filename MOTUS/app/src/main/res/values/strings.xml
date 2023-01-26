@@ -4,4 +4,5 @@
     <string name="motus">MOTUS</string>
     <string name="home">Home</string>
     <string name="restart">Restart</string>
+    <string name="hint">Hint</string>
 </resources>
