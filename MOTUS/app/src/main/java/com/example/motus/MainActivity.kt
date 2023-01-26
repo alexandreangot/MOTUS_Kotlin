@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import java.io.BufferedReader
+import java.io.File
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.text.Normalizer
@@ -84,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         var line: String?
         while (reader.readLine().also { line = it } != null) {
             var word = line?.split(",")?.toTypedArray()?.get(0)
-            
+            /*
             // Enleve les accents du mot et le mets en majuscule
             word = Normalizer.normalize(word, Normalizer.Form.NFD)
             word = word.replace("[^\\p{ASCII}]".toRegex(), "")
@@ -92,14 +93,17 @@ class MainActivity : AppCompatActivity() {
             
             // regex permettant de vérifier que le mot ne contient pas d'espace ou de tiret
             val regex = Regex("\\b(?!-)\\w+\\b(?<!-)")
-
-            if (word.length==size && word.matches(regex)){
-                words.add(word)
-                Log.d("MainActivity", "word: $word")
+            */
+            if (word != null) {
+                if (word.length==size){
+                    words.add(word)
+                    Log.d("MainActivity", "word: $word")
+                }
             }
 
         }
         reader.close()
+
         return words
     }
 
