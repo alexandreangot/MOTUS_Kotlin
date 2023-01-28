@@ -1,13 +1,11 @@
 package com.example.motus
 
-import android.util.Log
-
 class Motus(private val words : MutableList<String>) {
     private var end :Boolean = false
     private var step : Int = 0
     private var column : Int = 1
     private var word : String = words.random()
-    private var grid : MutableList<MutableList<Pair<Char, Int>>> = MutableList(6) { MutableList(word.length) { " ".toCharArray()[0] to 0 } }
+    private var grid : MutableList<MutableList<Pair<Char, Int>>> = MutableList(6) { MutableList(word.length) { ' ' to 0 } }
 
     init {
         grid[0][0] = Pair(word[0], 1)
@@ -16,12 +14,7 @@ class Motus(private val words : MutableList<String>) {
     fun getWord(): String { return word }
     private fun isEnd(): Boolean {
         if (!end){
-            for (i in word.indices){
-                if(grid[step][i].first != word[i]){
-                    return false
-                }
-            }
-            end=true
+            end = word==getCurrentWordInRow()
         }
         return end
     }
@@ -36,8 +29,7 @@ class Motus(private val words : MutableList<String>) {
     fun removeLetter(){
         if (column > 1 && !isEnd()){
             column--
-            val letter = " ".toCharArray()[0]
-            grid[step][column] = Pair(letter, 0)
+            grid[step][column] = Pair(' ', 0)
         }
     }
 
@@ -47,14 +39,11 @@ class Motus(private val words : MutableList<String>) {
                 if (words.contains(getCurrentWordInRow())){
                     checkRightLetter()
                     if (!isEnd()){
-                        step++
-                        column=1
-                        grid[step][0] = Pair(word[0], 1)
+                        nextStep()
                     }
                 }
                 else{
                     removeWord()
-                    column = 1
                 }
             }
             else{
@@ -63,52 +52,54 @@ class Motus(private val words : MutableList<String>) {
         }
     }
 
+    private fun nextStep(){
+        step++
+        column=1
+        grid[step][0] = Pair(word[0], 1)
+    }
+
     private fun getCurrentWordInRow(): String {
         var currentWord = ""
-        for (i in 0 until column){
-            currentWord+=grid[step][i].first
+        grid[step].forEach {
+            currentWord+=it.first
         }
-        Log.d("MainActivity", "ecrit : $currentWord")
         return currentWord
     }
 
-    private fun checkRightLetter() {
-        val occurrences = getLetterOccurrences()
 
-        for (i in word.indices){
-            if (grid[step][i].first == word[i]){ // letter in right position
-                grid[step][i] = Pair(grid[step][i].first, 3)
-                occurrences[grid[step][i].first] = occurrences[grid[step][i].first]!! - 1
+    private fun checkRightLetter() {
+        val occurrences = getLetterOccurrences().toMutableMap()
+        getCurrentWordInRow().forEachIndexed { index, letter ->
+            if (letter == word[index]) {
+                grid[step][index] = Pair(letter, 3)
+                occurrences[letter] = occurrences[letter]!! - 1
             }
         }
-        for( i in word.indices){
-            if (occurrences.containsKey(grid[step][i].first)){
-                if (occurrences[grid[step][i].first]!! > 0){
-                    grid[step][i] = Pair(grid[step][i].first, 2)
-                    occurrences[grid[step][i].first] = occurrences[grid[step][i].first]!! - 1
+
+        getCurrentWordInRow().forEachIndexed { index, letter ->
+            if (grid[step][index].second!=3){ // Vérifie que la lettre n'est pas déjà rouge
+                if (occurrences.containsKey(letter)){ // Vérifie que la lettre est dans le mots
+                    if (occurrences[letter]!! > 0){
+                        grid[step][index] = Pair(letter, 2)
+                        occurrences[letter] = occurrences[letter]!! - 1
+                    }
                 }
             }
         }
     }
 
 
-    private fun getLetterOccurrences(): MutableMap<Char, Int> {
-        val occurrences: MutableMap<Char, Int> = mutableMapOf()
-        for (letter in word) {
-            if (occurrences.containsKey(letter)) {
-                occurrences[letter] = occurrences[letter]!! + 1
-            } else {
-                occurrences[letter] = 1
-            }
-        }
-        return occurrences
+    private fun getLetterOccurrences(): Map<Char, Int> {
+        return word.groupBy { it }.mapValues { it.value.size }
     }
 
 
-    fun removeWord(){
-        for (i in 1 until word.length){
-            grid[step][i] = Pair(" ".toCharArray()[0], 0)
+    private fun removeWord(){
+        for ( i in 1 until word.length){
+            grid[step][i] = Pair(' ', 0)
         }
+        grid[step][0] = Pair(word[0], 1)
+        column=1
     }
 
 }
