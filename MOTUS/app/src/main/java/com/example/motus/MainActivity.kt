@@ -1,7 +1,6 @@
 package com.example.motus
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import java.io.BufferedReader
@@ -25,9 +24,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun startGame(keys:MutableList<Button>) {
         val words = readDictionary()
-        var motus = Motus(words)
+        val motus = Motus(words)
         setHintButton(motus)
-        var adapter = setGrid(motus)
+        val adapter = setGrid(motus)
         setkeys(motus, adapter, keys)
     }
 
@@ -74,7 +73,7 @@ class MainActivity : AppCompatActivity() {
         val buttonList = mutableListOf<Button>()
         val tableLayout = findViewById<TableLayout>(R.id.tableLayoutKeyboard)
 
-        val alphabet = "AZERTYUIOPQSDFGHJKLMWXCVBN".toCharArray()
+        val alphabet = "AZERTYUIOPQSDFGHJKLMWXCVBN"
         var index = 0
 
         for (i in 0 until 3) {
@@ -85,32 +84,14 @@ class MainActivity : AppCompatActivity() {
             )
             for (j in 0 until 10) {
                 if (!(i == 2 && (j == 1 || j == 9))) {
-                    val button = Button(this)
+                    var button :Button
                     if (i == 2 && j == 0) {
-                        button.layoutParams = TableRow.LayoutParams(
-                            TableRow.LayoutParams.WRAP_CONTENT,
-                            TableRow.LayoutParams.MATCH_PARENT,
-                            0.5f
-                        )
-                        button.contentDescription = "❌"
-                        button.text = "❌"
+                        button = createKey("❌", 0.5f)
                     }
                     else if (i == 2 && j == 8) {
-                        button.layoutParams = TableRow.LayoutParams(
-                            TableRow.LayoutParams.WRAP_CONTENT,
-                            TableRow.LayoutParams.MATCH_PARENT,
-                            0.5f
-                        )
-                        button.contentDescription = "✔"
-                        button.text = "✔"
+                        button = createKey("✔", 0.5f)
                     } else {
-                        button.layoutParams = TableRow.LayoutParams(
-                            TableRow.LayoutParams.WRAP_CONTENT,
-                            TableRow.LayoutParams.MATCH_PARENT,
-                            1f
-                        )
-                        button.contentDescription = alphabet[index].toString()
-                        button.text = alphabet[index].toString()
+                        button = createKey(alphabet[index].toString(), 1f)
                         index++
                     }
                     buttonList.add(button)
@@ -120,6 +101,18 @@ class MainActivity : AppCompatActivity() {
             tableLayout.addView(tableRow)
         }
         return buttonList
+    }
+
+    private fun createKey(name:String, size: Float): Button {
+        val button = Button(this)
+        button.layoutParams = TableRow.LayoutParams(
+            TableRow.LayoutParams.WRAP_CONTENT,
+            TableRow.LayoutParams.MATCH_PARENT,
+            size
+        )
+        button.contentDescription = name
+        button.text = name
+        return button
     }
 
     private fun setkeys(motus: Motus, adapter : MyGridAdapter, keys:MutableList<Button>){
