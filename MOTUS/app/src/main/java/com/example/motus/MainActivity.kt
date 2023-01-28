@@ -5,10 +5,8 @@ import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import java.io.BufferedReader
-import java.io.File
 import java.io.InputStream
 import java.io.InputStreamReader
-import java.text.Normalizer
 
 
 class MainActivity : AppCompatActivity() {
@@ -16,63 +14,37 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.word)
 
+        val keys = createKeyboard()
+        startGame(keys)
 
+        val imageButtonRestart = findViewById<ImageButton>(R.id.imageButtonRestart)
+        imageButtonRestart.setOnClickListener{
+            startGame(keys)
+        }
+    }
 
-        var motus = startGame()
+    private fun startGame(keys:MutableList<Button>) {
+        val words = readDictionary()
+        var motus = Motus(words)
+        setHintButton(motus)
+        var adapter = setGrid(motus)
+        setkeys(motus, adapter, keys)
+    }
 
-
-        Log.d("MainActivity", "word: ${motus.getWord()}")
-
+    private fun setHintButton(motus : Motus){
         val imageButtonHint = findViewById<ImageButton>(R.id.imageButtonHint)
         imageButtonHint.setOnClickListener{
             Toast.makeText(applicationContext, motus.getWord(), Toast.LENGTH_LONG).show()
         }
+    }
 
-
-
+    private fun setGrid(motus : Motus): MyGridAdapter {
         val myGridView = findViewById<GridView>(R.id.gridView)
         myGridView.numColumns = motus.getWord().length
-        var adapter = MyGridAdapter(this, motus.getGrid())
+        val adapter = MyGridAdapter(this, motus.getGrid())
         myGridView.adapter = adapter
-
-        val imageButtonRestart = findViewById<ImageButton>(R.id.imageButtonRestart)
-        imageButtonRestart.setOnClickListener{
-            motus = startGame()
-            myGridView.numColumns = motus.getWord().length
-            adapter = MyGridAdapter(this, motus.getGrid())
-            myGridView.adapter = adapter
-            adapter.updateData(motus.getGrid())
-        }
-
-
-        val keys = createKeyboard()
-
-        for (key in keys) {
-                key.setOnClickListener {
-
-                    when (key.contentDescription) {
-                        "❌" -> {
-                            motus.removeLetter()
-                        }
-                        "✔" -> {
-                            motus.checkWord()
-                        }
-                        else -> {
-                            motus.addLetter(key.contentDescription[0])
-                        }
-                    }
-                    adapter.updateData(motus.getGrid())
-                }
-            }
-
-
+        return adapter
     }
-
-    private fun startGame(): Motus {
-        val words = readDictionary()
-        return Motus(words)
-    }
-
 
     private fun readDictionary(): MutableList<String> {
         val size = (5..10).random()
@@ -84,20 +56,11 @@ class MainActivity : AppCompatActivity() {
         val reader = BufferedReader(InputStreamReader(inputStream))
         var line: String?
         while (reader.readLine().also { line = it } != null) {
-            var word = line?.split(",")?.toTypedArray()?.get(0)
-            /*
-            // Enleve les accents du mot et le mets en majuscule
-            word = Normalizer.normalize(word, Normalizer.Form.NFD)
-            word = word.replace("[^\\p{ASCII}]".toRegex(), "")
-            word  = word.uppercase()
-            
-            // regex permettant de vérifier que le mot ne contient pas d'espace ou de tiret
-            val regex = Regex("\\b(?!-)\\w+\\b(?<!-)")
-            */
+            val word = line?.split(",")?.toTypedArray()?.get(0)
+
             if (word != null) {
                 if (word.length==size){
                     words.add(word)
-                    Log.d("MainActivity", "word: $word")
                 }
             }
 
@@ -158,4 +121,25 @@ class MainActivity : AppCompatActivity() {
         }
         return buttonList
     }
+
+    private fun setkeys(motus: Motus, adapter : MyGridAdapter, keys:MutableList<Button>){
+        for (key in keys) {
+            key.setOnClickListener {
+
+                when (key.contentDescription) {
+                    "❌" -> {
+                        motus.removeLetter()
+                    }
+                    "✔" -> {
+                        motus.checkWord()
+                    }
+                    else -> {
+                        motus.addLetter(key.contentDescription[0])
+                    }
+                }
+                adapter.updateData(motus.getGrid())
+            }
+        }
+    }
+
 }
