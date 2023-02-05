@@ -16,15 +16,28 @@ class MainActivity : AppCompatActivity() {
         val keys = createKeyboard()
         startGame(keys)
 
+
+
+
         val imageButtonRestart = findViewById<ImageButton>(R.id.imageButtonRestart)
         imageButtonRestart.setOnClickListener{
             startGame(keys)
         }
+
+
+
+
     }
 
     private fun startGame(keys:MutableList<Button>) {
         val words = readDictionary()
+
+        val timer = Timer()
+        val textViewTimer = findViewById<TextView>(R.id.textViewTimer)
+        timer.start(textViewTimer)
+
         val motus = Motus(words)
+
         setHintButton(motus)
         val adapter = setGrid(motus)
         setkeys(motus, adapter, keys)

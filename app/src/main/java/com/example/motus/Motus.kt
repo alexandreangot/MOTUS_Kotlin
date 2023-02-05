@@ -12,42 +12,34 @@ class Motus(private val words : MutableList<String>) {
     }
     fun getGrid() : MutableList<MutableList<Pair<Char, Int>>> { return grid }
     fun getWord(): String { return word }
-    private fun isEnd(): Boolean {
-        if (!end){
-            end = word==getCurrentWordInRow()
-        }
-        return end
-    }
 
     fun addLetter(letter : Char){
-        if (column < word.length && !isEnd()){
+        if (column < word.length && !end){
             grid[step][column] = Pair(letter, 1)
             column++
         }
     }
 
     fun removeLetter(){
-        if (column > 1 && !isEnd()){
+        if (column > 1 && !end){
             column--
             grid[step][column] = Pair(' ', 0)
         }
     }
 
     fun checkWord() {
-        if (column == word.length){
-            if (step<word.length-1){
-                if (words.contains(getCurrentWordInRow())){
-                    checkRightLetter()
-                    if (!isEnd()){
+        if(!end) {
+            if (column == word.length) {
+                if (words.contains(getCurrentWordInRow())) {
+                    colorRightLetter()
+                    if (step >= word.length || word == getCurrentWordInRow()) {
+                        end = true
+                    } else {
                         nextStep()
                     }
-                }
-                else{
+                }else{
                     removeWord()
                 }
-            }
-            else{
-                this.end = true
             }
         }
     }
@@ -66,8 +58,7 @@ class Motus(private val words : MutableList<String>) {
         return currentWord
     }
 
-
-    private fun checkRightLetter() {
+    private fun colorRightLetter() {
         val occurrences = getLetterOccurrences().toMutableMap()
         getCurrentWordInRow().forEachIndexed { index, letter ->
             if (letter == word[index]) {
@@ -88,11 +79,9 @@ class Motus(private val words : MutableList<String>) {
         }
     }
 
-
     private fun getLetterOccurrences(): Map<Char, Int> {
         return word.groupBy { it }.mapValues { it.value.size }
     }
-
 
     private fun removeWord(){
         for ( i in 1 until word.length){
