@@ -1,4 +1,4 @@
-package com.example.motus
+package com.example.motus.adapters
 
 import android.view.View
 import android.view.ViewGroup

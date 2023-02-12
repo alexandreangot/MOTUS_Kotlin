@@ -1,4 +1,4 @@
-package com.example.motus
+package com.example.motus.models
 
 import android.os.Handler
 import android.os.SystemClock

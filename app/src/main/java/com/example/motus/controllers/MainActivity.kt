@@ -1,8 +1,12 @@
-package com.example.motus
+package com.example.motus.controllers
 
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.example.motus.R
+import com.example.motus.adapters.GridAdapter
+import com.example.motus.models.Motus
+import com.example.motus.models.Timer
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
@@ -50,10 +54,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setGrid(motus : Motus): MyGridAdapter {
+    private fun setGrid(motus : Motus): GridAdapter {
         val myGridView = findViewById<GridView>(R.id.gridView)
         myGridView.numColumns = motus.getWord().length
-        val adapter = MyGridAdapter(this, motus.getGrid())
+        val adapter = GridAdapter(this, motus.getGrid())
         myGridView.adapter = adapter
         return adapter
     }
@@ -128,7 +132,7 @@ class MainActivity : AppCompatActivity() {
         return button
     }
 
-    private fun setkeys(motus: Motus, adapter : MyGridAdapter, keys:MutableList<Button>){
+    private fun setkeys(motus: Motus, adapter : GridAdapter, keys:MutableList<Button>){
         for (key in keys) {
             key.setOnClickListener {
 

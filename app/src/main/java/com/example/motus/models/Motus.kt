@@ -1,4 +1,4 @@
-package com.example.motus
+package com.example.motus.models
 
 class Motus(private val words : MutableList<String>) {
     private var end :Boolean = false

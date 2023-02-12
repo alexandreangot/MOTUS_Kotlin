@@ -1,4 +1,4 @@
-package com.example.motus
+package com.example.motus.adapters
 
 import android.content.Context
 import android.graphics.Color
@@ -7,8 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import com.example.motus.R
 
-class MyGridAdapter(context: Context, private var data: MutableList<MutableList<Pair<Char, Int>>>) : BaseAdapter() {
+class GridAdapter(context: Context, private var data: MutableList<MutableList<Pair<Char, Int>>>) : BaseAdapter() {
     private val mInflater: LayoutInflater = LayoutInflater.from(context)
 
     fun updateData(newData: MutableList<MutableList<Pair<Char, Int>>>) {
