@@ -5,6 +5,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.motus.R
 import com.example.motus.adapters.GridAdapter
+import com.example.motus.adapters.KeyboardAdapter
 import com.example.motus.models.Motus
 import com.example.motus.models.Timer
 import java.io.BufferedReader
@@ -20,17 +21,10 @@ class MainActivity : AppCompatActivity() {
         val keys = createKeyboard()
         startGame(keys)
 
-
-
-
         val imageButtonRestart = findViewById<ImageButton>(R.id.imageButtonRestart)
         imageButtonRestart.setOnClickListener{
             startGame(keys)
         }
-
-
-
-
     }
 
     private fun startGame(keys:MutableList<Button>) {
@@ -43,8 +37,13 @@ class MainActivity : AppCompatActivity() {
         val motus = Motus(words)
 
         setHintButton(motus)
-        val adapter = setGrid(motus)
-        setkeys(motus, adapter, keys)
+        val gridAdapter = setGridAdapter(motus)
+
+        setkeys(motus, gridAdapter, keys)
+    }
+
+    private fun setKeyboardAdapter(motus: Motus){
+
     }
 
     private fun setHintButton(motus : Motus){
@@ -54,11 +53,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setGrid(motus : Motus): GridAdapter {
-        val myGridView = findViewById<GridView>(R.id.gridView)
-        myGridView.numColumns = motus.getWord().length
+    private fun setGridAdapter(motus : Motus): GridAdapter {
+        val gridView = findViewById<GridView>(R.id.gridView)
+        gridView.numColumns = motus.getWord().length
         val adapter = GridAdapter(this, motus.getGrid())
-        myGridView.adapter = adapter
+        gridView.adapter = adapter
         return adapter
     }
 
@@ -82,7 +81,6 @@ class MainActivity : AppCompatActivity() {
 
         }
         reader.close()
-
         return words
     }
 

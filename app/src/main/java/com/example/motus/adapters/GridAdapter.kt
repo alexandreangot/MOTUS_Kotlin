@@ -10,7 +10,7 @@ import android.widget.TextView
 import com.example.motus.R
 
 class GridAdapter(context: Context, private var data: MutableList<MutableList<Pair<Char, Int>>>) : BaseAdapter() {
-    private val mInflater: LayoutInflater = LayoutInflater.from(context)
+    private val inflater: LayoutInflater = LayoutInflater.from(context)
 
     fun updateData(newData: MutableList<MutableList<Pair<Char, Int>>>) {
         this.data = newData
@@ -36,7 +36,7 @@ class GridAdapter(context: Context, private var data: MutableList<MutableList<Pa
         val vh: ViewHolder
 
         if (convertView == null) {
-            view = mInflater.inflate(R.layout.grid_item, parent, false)
+            view = inflater.inflate(R.layout.grid_item, parent, false)
             vh = ViewHolder(view)
             view.tag = vh
         } else {
