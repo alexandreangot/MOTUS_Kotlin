@@ -60,7 +60,6 @@ class GridAdapter(context: Context, private var data: MutableList<MutableList<Pa
                 vh.textView.setBackgroundColor(Color.RED)
             }
         }
-
         return view
     }
 

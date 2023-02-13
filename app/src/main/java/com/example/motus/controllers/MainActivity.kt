@@ -11,7 +11,6 @@ import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
 
-
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
