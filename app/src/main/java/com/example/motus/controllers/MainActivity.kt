@@ -5,7 +5,6 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.motus.R
 import com.example.motus.adapters.GridAdapter
-import com.example.motus.adapters.KeyboardAdapter
 import com.example.motus.models.Motus
 import com.example.motus.models.Timer
 import java.io.BufferedReader
@@ -35,15 +34,10 @@ class MainActivity : AppCompatActivity() {
         timer.start(textViewTimer)
 
         val motus = Motus(words)
-
-        setHintButton(motus)
         val gridAdapter = setGridAdapter(motus)
 
         setkeys(motus, gridAdapter, keys)
-    }
-
-    private fun setKeyboardAdapter(motus: Motus){
-
+        setHintButton(motus)
     }
 
     private fun setHintButton(motus : Motus){
@@ -63,16 +57,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun readDictionary(): MutableList<String> {
         val size = (5..10).random()
-
         val words = mutableListOf<String>()
-
         val csvFile = "dictionary.csv"
         val inputStream: InputStream = assets.open(csvFile)
         val reader = BufferedReader(InputStreamReader(inputStream))
         var line: String?
+
         while (reader.readLine().also { line = it } != null) {
             val word = line?.split(",")?.toTypedArray()?.get(0)
-
             if (word != null) {
                 if (word.length==size){
                     words.add(word)
@@ -87,7 +79,6 @@ class MainActivity : AppCompatActivity() {
     private fun createKeyboard(): MutableList<Button> {
         val buttonList = mutableListOf<Button>()
         val tableLayout = findViewById<TableLayout>(R.id.tableLayoutKeyboard)
-
         val alphabet = "AZERTYUIOPQSDFGHJKLMWXCVBN"
         var index = 0
 
@@ -133,7 +124,6 @@ class MainActivity : AppCompatActivity() {
     private fun setkeys(motus: Motus, adapter : GridAdapter, keys:MutableList<Button>){
         for (key in keys) {
             key.setOnClickListener {
-
                 when (key.contentDescription) {
                     "❌" -> {
                         motus.removeLetter()
@@ -149,5 +139,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
 }
