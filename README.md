@@ -1,14 +1,15 @@
 # Kotlin-Motus
 
-Kotlin application inspired by the TV game "Motus".
+Application Kotlin inspirée du jeu télévisé "Motus".
 
-## Features
+## Fonctionnalités
 
-* Guessing the hidden word
-* Stopwatch indicating the time taken
-* Changing the word
-* Displaying the word in case of giving up
+    * Deviner le mot caché
+    * Chronomètre indiquant le temps écoulé
+    * Changer le mot en cours
+    * Afficher le mot en cas d'abandon
 
-## How to use
+## Comment utiliser
 
-To use the application, simply run the Kotlin code in your preferred Kotlin IDE. The game will start, and you can begin guessing the hidden word.
+Pour utiliser l'application, exécutez simplement le code Kotlin sur Android Studio. 
+Le jeu va démarrer et vous pourrez commencer à deviner le mot caché.
