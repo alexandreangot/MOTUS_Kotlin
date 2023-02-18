@@ -133,6 +133,7 @@ class MainActivity : AppCompatActivity() {
                         motus.checkWord()
                         if (motus.isEnd()) {
                             timer.stop()
+                            displayWord(motus)
                         }
                     }
                     else -> {
@@ -142,5 +143,10 @@ class MainActivity : AppCompatActivity() {
                 adapter.updateData(motus.getGrid())
             }
         }
+    }
+
+    private fun displayWord(motus: Motus) {
+        val textViewWord = findViewById<TextView>(R.id.textViewWord)
+        textViewWord.text = motus.getWord()
     }
 }
