@@ -123,8 +123,14 @@ class MainActivity : AppCompatActivity() {
             TableRow.LayoutParams.MATCH_PARENT,
             size
         )
+        button.setBackgroundResource(R.drawable.key_shape)
         button.contentDescription = name
         button.text = name
+
+        val layoutParams = button.layoutParams as TableRow.LayoutParams
+        layoutParams.setMargins(3, 3, 3, 3)
+        button.layoutParams = layoutParams
+
         return button
     }
 

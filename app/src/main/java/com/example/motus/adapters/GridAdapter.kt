@@ -1,5 +1,6 @@
 package com.example.motus.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -31,6 +32,7 @@ class GridAdapter(context: Context, private var data: MutableList<MutableList<Pa
         return position.toLong()
     }
 
+    @SuppressLint("ResourceAsColor")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view: View
         val vh: ViewHolder
@@ -51,13 +53,13 @@ class GridAdapter(context: Context, private var data: MutableList<MutableList<Pa
                 vh.textView.setBackgroundColor(Color.TRANSPARENT)
             }
             1 -> {
-                vh.textView.setBackgroundColor(Color.CYAN)
+                vh.textView.setBackgroundColor(Color.rgb(176, 224, 230))
             }
             2 -> {
-                vh.textView.setBackgroundColor(Color.YELLOW)
+                vh.textView.setBackgroundColor(Color.rgb(255, 215, 0))
             }
             3 -> {
-                vh.textView.setBackgroundColor(Color.RED)
+                vh.textView.setBackgroundColor(Color.rgb(220, 20, 60))
             }
         }
         return view

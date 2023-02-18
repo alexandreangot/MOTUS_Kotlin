@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_blue"
     tools:context=".controllers.MainActivity">
 
     <LinearLayout
@@ -35,13 +36,6 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textViewWord"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/textViewTimer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textViewTimer"
@@ -59,9 +53,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:background="@drawable/grid_item_border"
+        android:layout_marginHorizontal="5dp"
         app:layout_constraintBottom_toTopOf="@+id/tableLayoutKeyboard"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <TextView
+        android:id="@+id/textViewWord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gridView"
+        android:textSize="15sp" />
 
     <TableLayout
         android:id="@+id/tableLayoutKeyboard"
@@ -70,6 +73,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="10dp"/>
+        app:layout_constraintTop_toBottomOf="@+id/gridView"
+        android:layout_margin="3dp"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
