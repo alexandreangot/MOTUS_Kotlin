@@ -9,6 +9,9 @@ class Motus(private val words : MutableList<String>) {
 
     init {
         grid[0][0] = Pair(word[0], 1)
+        for (indice in 1 until word.length){
+            grid[0][indice] = Pair('·', 0)
+        }
     }
 
     fun getGrid() : MutableList<MutableList<Pair<Char, Int>>> { return grid }
@@ -49,6 +52,9 @@ class Motus(private val words : MutableList<String>) {
         step++
         column=1
         grid[step][0] = Pair(word[0], 1)
+        for (indice in 1 until word.length){
+            grid[step][indice] = Pair('·', 0)
+        }
     }
 
     private fun getCurrentWordInRow(): String {
