@@ -37,17 +37,15 @@ class MainActivity : AppCompatActivity() {
         val gridAdapter = setGridAdapter(motus)
 
         setkeys(motus, gridAdapter, keys, timer)
-        setGiveUpButton(motus, timer)
+        setGiveUpButton(motus, timer, keys)
         removeWord()
     }
 
-    private fun setGiveUpButton(motus: Motus, timer: Timer){
+    private fun setGiveUpButton(motus: Motus, timer: Timer, keys: MutableList<Button>) {
         val imageButtonHint = findViewById<ImageButton>(R.id.imageButtonGiveUp)
         imageButtonHint.callOnClick()
         imageButtonHint.setOnClickListener{
-            motus.end = true
-            timer.stop()
-            displayWord(motus)
+            endGame(timer, motus, keys)
         }
     }
 
@@ -137,8 +135,7 @@ class MainActivity : AppCompatActivity() {
                     "✔" -> {
                         motus.checkWord()
                         if (motus.end) {
-                            timer.stop()
-                            displayWord(motus)
+                            endGame(timer, motus, keys)
                         }
                     }
                     else -> {
@@ -158,5 +155,15 @@ class MainActivity : AppCompatActivity() {
     private fun removeWord() {
         val textViewWord = findViewById<TextView>(R.id.textViewWord)
         textViewWord.text = ""
+    }
+
+    fun endGame(timer: Timer, motus: Motus, keys: MutableList<Button>) {
+        motus.end = true
+        timer.stop()
+        displayWord(motus)
+        for (key in keys) {
+            key.isEnabled = false
+        }
+        findViewById<ImageButton>(R.id.imageButtonGiveUp).isEnabled = false
     }
 }
