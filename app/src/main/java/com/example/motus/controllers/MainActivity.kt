@@ -28,11 +28,8 @@ class MainActivity : AppCompatActivity() {
     private fun startGame(keys:MutableList<Button>) {
         val words = readDictionary()
 
-        val timer = Timer()
-        val textViewTimer = findViewById<TextView>(R.id.textViewTimer)
-        timer.start(textViewTimer)
-
         val motus = Motus(words)
+
         val gridAdapter = setGridAdapter(motus)
 
         setkeys(motus, gridAdapter, keys)
@@ -121,6 +118,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setkeys(motus: Motus, adapter : GridAdapter, keys:MutableList<Button>){
+
+        val timer = Timer()
+        val textViewTimer = findViewById<TextView>(R.id.textViewTimer)
+        timer.start(textViewTimer)
+
         for (key in keys) {
             key.setOnClickListener {
                 when (key.contentDescription) {
@@ -129,6 +131,9 @@ class MainActivity : AppCompatActivity() {
                     }
                     "✔" -> {
                         motus.checkWord()
+                        if (motus.isEnd()) {
+                            timer.stop()
+                        }
                     }
                     else -> {
                         motus.addLetter(key.contentDescription[0])

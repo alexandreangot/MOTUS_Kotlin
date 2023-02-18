@@ -14,6 +14,8 @@ class Motus(private val words : MutableList<String>) {
     fun getGrid() : MutableList<MutableList<Pair<Char, Int>>> { return grid }
     fun getWord(): String { return word }
 
+    fun isEnd(): Boolean { return end }
+
     fun addLetter(letter : Char){
         if (column < word.length && !end){
             grid[step][column] = Pair(letter, 1)
