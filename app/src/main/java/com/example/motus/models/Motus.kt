@@ -1,4 +1,4 @@
-package com.example.motus
+package com.example.motus.models
 
 class Motus(private val words : MutableList<String>) {
     private var end :Boolean = false
@@ -10,6 +10,7 @@ class Motus(private val words : MutableList<String>) {
     init {
         grid[0][0] = Pair(word[0], 1)
     }
+
     fun getGrid() : MutableList<MutableList<Pair<Char, Int>>> { return grid }
     fun getWord(): String { return word }
 

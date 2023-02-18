@@ -1,4 +1,4 @@
-package com.example.motus
+package com.example.motus.models
 
 import android.os.Handler
 import android.os.SystemClock
@@ -13,7 +13,7 @@ class Timer {
     private val updateTimer = object : Runnable {
         override fun run() {
             timeInMilliseconds = SystemClock.uptimeMillis() - startTime
-            var secs = (timeInMilliseconds / 1000).toInt()
+            val secs = (timeInMilliseconds / 1000).toInt()
             t!!.text = String.format("%02d:%02d", secs / 60, secs % 60)
             timerHandler.postDelayed(this, 0)
         }

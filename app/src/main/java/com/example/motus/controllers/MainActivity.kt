@@ -1,12 +1,15 @@
-package com.example.motus
+package com.example.motus.controllers
 
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.example.motus.R
+import com.example.motus.adapters.GridAdapter
+import com.example.motus.models.Motus
+import com.example.motus.models.Timer
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
-
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,17 +19,10 @@ class MainActivity : AppCompatActivity() {
         val keys = createKeyboard()
         startGame(keys)
 
-
-
-
         val imageButtonRestart = findViewById<ImageButton>(R.id.imageButtonRestart)
         imageButtonRestart.setOnClickListener{
             startGame(keys)
         }
-
-
-
-
     }
 
     private fun startGame(keys:MutableList<Button>) {
@@ -37,10 +33,10 @@ class MainActivity : AppCompatActivity() {
         timer.start(textViewTimer)
 
         val motus = Motus(words)
+        val gridAdapter = setGridAdapter(motus)
 
+        setkeys(motus, gridAdapter, keys)
         setHintButton(motus)
-        val adapter = setGrid(motus)
-        setkeys(motus, adapter, keys)
     }
 
     private fun setHintButton(motus : Motus){
@@ -50,26 +46,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setGrid(motus : Motus): MyGridAdapter {
-        val myGridView = findViewById<GridView>(R.id.gridView)
-        myGridView.numColumns = motus.getWord().length
-        val adapter = MyGridAdapter(this, motus.getGrid())
-        myGridView.adapter = adapter
+    private fun setGridAdapter(motus : Motus): GridAdapter {
+        val gridView = findViewById<GridView>(R.id.gridView)
+        gridView.numColumns = motus.getWord().length
+        val adapter = GridAdapter(this, motus.getGrid())
+        gridView.adapter = adapter
         return adapter
     }
 
     private fun readDictionary(): MutableList<String> {
         val size = (5..10).random()
-
         val words = mutableListOf<String>()
-
         val csvFile = "dictionary.csv"
         val inputStream: InputStream = assets.open(csvFile)
         val reader = BufferedReader(InputStreamReader(inputStream))
         var line: String?
+
         while (reader.readLine().also { line = it } != null) {
             val word = line?.split(",")?.toTypedArray()?.get(0)
-
             if (word != null) {
                 if (word.length==size){
                     words.add(word)
@@ -78,14 +72,12 @@ class MainActivity : AppCompatActivity() {
 
         }
         reader.close()
-
         return words
     }
 
     private fun createKeyboard(): MutableList<Button> {
         val buttonList = mutableListOf<Button>()
         val tableLayout = findViewById<TableLayout>(R.id.tableLayoutKeyboard)
-
         val alphabet = "AZERTYUIOPQSDFGHJKLMWXCVBN"
         var index = 0
 
@@ -128,10 +120,9 @@ class MainActivity : AppCompatActivity() {
         return button
     }
 
-    private fun setkeys(motus: Motus, adapter : MyGridAdapter, keys:MutableList<Button>){
+    private fun setkeys(motus: Motus, adapter : GridAdapter, keys:MutableList<Button>){
         for (key in keys) {
             key.setOnClickListener {
-
                 when (key.contentDescription) {
                     "❌" -> {
                         motus.removeLetter()
@@ -147,5 +138,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
 }
