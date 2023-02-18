@@ -28,18 +28,26 @@ class MainActivity : AppCompatActivity() {
     private fun startGame(keys:MutableList<Button>) {
         val words = readDictionary()
 
+        val timer = Timer()
+        val textViewTimer = findViewById<TextView>(R.id.textViewTimer)
+        timer.start(textViewTimer)
+
         val motus = Motus(words)
 
         val gridAdapter = setGridAdapter(motus)
 
-        setkeys(motus, gridAdapter, keys)
-        setHintButton(motus)
+        setkeys(motus, gridAdapter, keys, timer)
+        setGiveUpButton(motus, timer)
+        removeWord()
     }
 
-    private fun setHintButton(motus : Motus){
-        val imageButtonHint = findViewById<ImageButton>(R.id.imageButtonHint)
+    private fun setGiveUpButton(motus: Motus, timer: Timer){
+        val imageButtonHint = findViewById<ImageButton>(R.id.imageButtonGiveUp)
+        imageButtonHint.callOnClick()
         imageButtonHint.setOnClickListener{
-            Toast.makeText(applicationContext, motus.getWord(), Toast.LENGTH_LONG).show()
+            motus.end = true
+            timer.stop()
+            displayWord(motus)
         }
     }
 
@@ -117,11 +125,8 @@ class MainActivity : AppCompatActivity() {
         return button
     }
 
-    private fun setkeys(motus: Motus, adapter : GridAdapter, keys:MutableList<Button>){
+    private fun setkeys(motus: Motus, adapter: GridAdapter, keys: MutableList<Button>, timer: Timer){
 
-        val timer = Timer()
-        val textViewTimer = findViewById<TextView>(R.id.textViewTimer)
-        timer.start(textViewTimer)
 
         for (key in keys) {
             key.setOnClickListener {
@@ -131,7 +136,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     "✔" -> {
                         motus.checkWord()
-                        if (motus.isEnd()) {
+                        if (motus.end) {
                             timer.stop()
                             displayWord(motus)
                         }
@@ -147,6 +152,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun displayWord(motus: Motus) {
         val textViewWord = findViewById<TextView>(R.id.textViewWord)
-        textViewWord.text = motus.getWord()
+        textViewWord.text = "Partie terminée, le mot était : ${motus.getWord()}"
+    }
+
+    private fun removeWord() {
+        val textViewWord = findViewById<TextView>(R.id.textViewWord)
+        textViewWord.text = ""
     }
 }

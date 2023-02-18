@@ -1,7 +1,7 @@
 package com.example.motus.models
 
 class Motus(private val words : MutableList<String>) {
-    private var end :Boolean = false
+    var end :Boolean = false
     private var step : Int = 0
     private var column : Int = 1
     private var word : String = words.random()
@@ -13,8 +13,6 @@ class Motus(private val words : MutableList<String>) {
 
     fun getGrid() : MutableList<MutableList<Pair<Char, Int>>> { return grid }
     fun getWord(): String { return word }
-
-    fun isEnd(): Boolean { return end }
 
     fun addLetter(letter : Char){
         if (column < word.length && !end){
