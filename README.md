@@ -2,9 +2,9 @@
 
 Application Kotlin inspirée du jeu télévisé "Motus".
 
-<p align="center"> 
-<img src="https://user-images.githubusercontent.com/114108511/219881649-c9d20346-0828-4364-b7ba-6a04d0886a82.jpg" width="150">
-<img src="https://user-images.githubusercontent.com/114108511/219881663-76be860f-32f8-4b49-8ab4-e2c3e4f3edc3.jpg" width="150">
+<p align="left"> 
+   <img margin="20" src="https://user-images.githubusercontent.com/114108511/219881649-c9d20346-0828-4364-b7ba-6a04d0886a82.jpg" width="150">
+   <img src="https://user-images.githubusercontent.com/114108511/219881663-76be860f-32f8-4b49-8ab4-e2c3e4f3edc3.jpg" width="150">
 </p>
 
 ## Fonctionnalités
