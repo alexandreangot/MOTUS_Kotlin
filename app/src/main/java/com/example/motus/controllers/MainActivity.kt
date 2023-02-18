@@ -16,16 +16,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.word)
 
-        val keys = createKeyboard()
-        startGame(keys)
+        startGame()
+    }
 
+    private fun setRestartButton(){
         val imageButtonRestart = findViewById<ImageButton>(R.id.imageButtonRestart)
         imageButtonRestart.setOnClickListener{
-            startGame(keys)
+            startGame()
         }
     }
 
-    private fun startGame(keys:MutableList<Button>) {
+    private fun startGame() {
+
+        val keys = createKeyboard()
         val words = readDictionary()
 
         val timer = Timer()
@@ -36,8 +39,9 @@ class MainActivity : AppCompatActivity() {
 
         val gridAdapter = setGridAdapter(motus)
 
-        setkeys(motus, gridAdapter, keys, timer)
         setGiveUpButton(motus, timer, keys)
+        setkeys(motus, gridAdapter, keys, timer)
+        setRestartButton()
         removeWord()
     }
 
@@ -81,6 +85,7 @@ class MainActivity : AppCompatActivity() {
     private fun createKeyboard(): MutableList<Button> {
         val buttonList = mutableListOf<Button>()
         val tableLayout = findViewById<TableLayout>(R.id.tableLayoutKeyboard)
+        tableLayout.removeAllViews()
         val alphabet = "AZERTYUIOPQSDFGHJKLMWXCVBN"
         var index = 0
 
@@ -124,8 +129,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setkeys(motus: Motus, adapter: GridAdapter, keys: MutableList<Button>, timer: Timer){
-
-
         for (key in keys) {
             key.setOnClickListener {
                 when (key.contentDescription) {
@@ -157,13 +160,12 @@ class MainActivity : AppCompatActivity() {
         textViewWord.text = ""
     }
 
-    fun endGame(timer: Timer, motus: Motus, keys: MutableList<Button>) {
+    private fun endGame(timer: Timer, motus: Motus, keys: MutableList<Button>) {
         motus.end = true
         timer.stop()
         displayWord(motus)
         for (key in keys) {
             key.isEnabled = false
         }
-        findViewById<ImageButton>(R.id.imageButtonGiveUp).isEnabled = false
     }
 }
