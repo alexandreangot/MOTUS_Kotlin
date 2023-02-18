@@ -17,6 +17,7 @@ Application Android inspirée du jeu télévisé "Motus".
 ## Comment utiliser
 ### Télécharger sur smartphone
 * [Fichier APK](https://github.com/alexandreangot/kotlin-motus/blob/main/app/release/app-release.apk?raw=true)
+
 Pour utiliser l'application, exécutez simplement le fichier APK sur votre smartphone Android. 
 Le jeu va démarrer et vous pourrez commencer à deviner le mot caché.
 
