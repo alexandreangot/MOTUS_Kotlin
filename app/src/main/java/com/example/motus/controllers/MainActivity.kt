@@ -1,6 +1,7 @@
 package com.example.motus.controllers
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.motus.R
@@ -86,7 +87,7 @@ class MainActivity : AppCompatActivity() {
         val buttonList = mutableListOf<Button>()
         val tableLayout = findViewById<TableLayout>(R.id.tableLayoutKeyboard)
         tableLayout.removeAllViews()
-        val alphabet = "AZERTYUIOPQSDFGHJKLMWXCVBN"
+        val alphabet = resources.getString(R.string.keyboard)
         var index = 0
 
         for (i in 0 until 3) {
@@ -158,7 +159,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun displayWord(motus: Motus) {
         val textViewWord = findViewById<TextView>(R.id.textViewWord)
-        textViewWord.text = "Partie terminée, le mot était : ${motus.getWord()}"
+        textViewWord.text = resources.getString(R.string.end_game, motus.getWord())
     }
 
     private fun removeWord() {

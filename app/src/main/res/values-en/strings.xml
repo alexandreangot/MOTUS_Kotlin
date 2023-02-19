@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MOTUS</string>
+    <string name="restart">Restart</string>
+    <string name="timer">00:00</string>
+    <string name="give_up">Give Up</string>
+    <string name="keyboard">QWERTYUIOPASDFGHJKLMZXCVBN</string>
+    <string name="end_game">Game over, the word was: %s</string>
+</resources>
